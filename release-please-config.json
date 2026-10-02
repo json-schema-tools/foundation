@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "aae39a12b06581a41872f92a7211b6c4a754b8d3",
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "package-name": "foundation",
+      "changelog-path": "CHANGELOG.md",
+      "include-component-in-tag": false,
+      "include-v-in-tag": true,
+      "bump-minor-pre-major": false
+    }
+  }
+}
