@@ -1,0 +1,75 @@
+name: Node CI
+'on':
+  workflow_call:
+    inputs:
+      lint-command:
+        type: string
+        default: ''
+      build-command:
+        type: string
+        default: npm run build
+      test-command:
+        type: string
+        default: npm test -- --runInBand
+      docs-command:
+        type: string
+        default: ''
+      post-build-command:
+        type: string
+        default: ''
+      node-options:
+        type: string
+        default: ''
+      rust-tests:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+        - 20.x
+        - 22.x
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: npm
+    - name: Install dependencies
+      run: npm ci
+    - name: Lint
+      if: inputs.lint-command != ''
+      env:
+        COMMAND: ${{ inputs.lint-command }}
+      run: bash -eo pipefail -c "$COMMAND"
+    - name: Build
+      if: inputs.build-command != ''
+      env:
+        COMMAND: ${{ inputs.build-command }}
+      run: bash -eo pipefail -c "$COMMAND"
+    - name: Verify generated files
+      if: inputs.post-build-command != ''
+      env:
+        COMMAND: ${{ inputs.post-build-command }}
+      run: bash -eo pipefail -c "$COMMAND"
+    - name: Build docs
+      if: inputs.docs-command != ''
+      env:
+        COMMAND: ${{ inputs.docs-command }}
+      run: bash -eo pipefail -c "$COMMAND"
+    - name: Test
+      if: inputs.test-command != ''
+      env:
+        COMMAND: ${{ inputs.test-command }}
+      run: bash -eo pipefail -c "$COMMAND"
+    - name: Test Rust bindings
+      if: inputs.rust-tests
+      run: cargo test
+    env:
+      NODE_OPTIONS: ${{ inputs.node-options }}

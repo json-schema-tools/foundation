@@ -1,0 +1,23 @@
+name: CI
+'on':
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+  workflow_dispatch: null
+permissions:
+  contents: read
+jobs:
+  workflows:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Validate workflow syntax
+      run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color
+  commitlint:
+    uses: ./.github/workflows/commitlint.yml
+    permissions:
+      contents: read
+      pull-requests: read
