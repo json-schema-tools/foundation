@@ -3,6 +3,7 @@
 Reusable GitHub Actions workflows for json-schema-tools repositories.
 
 - `node-ci.yml`: Node 20 and 22, npm ci, repository build/test commands, optional lint/docs and Rust tests.
+- `lint.yml`: standalone Node 22 lint check, using npm ci and `npm run lint -- --no-fix` by default, matching traverse's ESLint CI command.
 - `commitlint.yml`: conventional commit checks on pull requests.
 - `release.yml`: release-please, explicit CI dispatch for release PRs, npm trusted publishing, optional Pages, Rust crate publishing, generated assets, and AWS schema deployment.
 
@@ -15,6 +16,16 @@ Merge foundation changes first, then consumer updates. To roll out future shared
 ## Inputs
 
 CI accepts `lint-command`, `build-command`, `test-command`, `docs-command`, `post-build-command`, `node-options`, and `rust-tests`. Defaults build and test with npm, and skip optional steps. Node versions are centrally maintained.
+
+The standalone lint workflow accepts `lint-command` to override its default. Consumers can call it as a separate job, pinning it to a reviewed foundation commit:
+
+```yaml
+jobs:
+  lint:
+    uses: json-schema-tools/foundation/.github/workflows/lint.yml@<full commit SHA>
+```
+
+When using the standalone lint job, omit `lint-command` from the `node-ci.yml` call to avoid running lint again in each test matrix job.
 
 Release accepts `build-command`, `test-command`, `docs-command`, `node-options`, `rust-tests`, `publish-npm` (default true), `pages-path` (empty disables Pages), and `release-assets` (JSON array). Schema deployments additionally enable `deploy-schema` and set `schema-destination`, `cloudfront-distribution`, and optionally `schema-source` and `aws-region`. The caller's release environment must contain `AWS_RELEASE_ROLE_ARN`.
 
