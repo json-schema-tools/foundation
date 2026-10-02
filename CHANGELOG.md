@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/json-schema-tools/foundation/compare/v1.0.0...v1.1.0) (2026-10-02)
+
+
+### Features
+
+* add standalone reusable lint workflow ([#5](https://github.com/json-schema-tools/foundation/issues/5)) ([7d4f45f](https://github.com/json-schema-tools/foundation/commit/7d4f45f9f3bbd5bd2bfece5ddef92513835cae8d))
+
 ## 1.0.0 (2026-10-02)
 
 
