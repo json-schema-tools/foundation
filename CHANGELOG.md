@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/json-schema-tools/foundation/compare/v1.2.0...v1.3.0) (2026-10-17)
+
+
+### Features
+
+* accept CARGO_REGISTRY_TOKEN as a workflow_call secret ([#9](https://github.com/json-schema-tools/foundation/issues/9)) ([f4338ff](https://github.com/json-schema-tools/foundation/commit/f4338ff32c9d3ea6c5c2b72d53faff3df3465e9e))
+
 ## [1.2.0](https://github.com/json-schema-tools/foundation/compare/v1.1.0...v1.2.0) (2026-10-17)
 
 
