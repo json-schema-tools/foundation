@@ -41,6 +41,9 @@ name: Release
       cloudfront-distribution:
         type: string
         default: ''
+    secrets:
+      CLOUDFRONT_DISTRIBUTION_ID:
+        required: false
 permissions:
   contents: read
 jobs:
@@ -146,7 +149,7 @@ jobs:
       env:
         SCHEMA_SOURCE: ${{ inputs.schema-source }}
         SCHEMA_DESTINATION: ${{ inputs.schema-destination }}
-        DISTRIBUTION: ${{ inputs.cloudfront-distribution }}
+        DISTRIBUTION: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID || inputs.cloudfront-distribution }}
     - name: Upload Pages artifact
       if: steps.release.outputs.release_created == 'true' && inputs.pages-path != ''
       uses: actions/upload-pages-artifact@v3
