@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/json-schema-tools/foundation/compare/v1.1.0...v1.2.0) (2026-10-17)
+
+
+### Features
+
+* accept CLOUDFRONT_DISTRIBUTION_ID as a secret ([#7](https://github.com/json-schema-tools/foundation/issues/7)) ([11df902](https://github.com/json-schema-tools/foundation/commit/11df902eb904ad671d8677614136a250edc8a98a))
+
 ## [1.1.0](https://github.com/json-schema-tools/foundation/compare/v1.0.0...v1.1.0) (2026-10-02)
 
 
