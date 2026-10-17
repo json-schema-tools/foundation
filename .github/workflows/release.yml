@@ -44,6 +44,8 @@ name: Release
     secrets:
       CLOUDFRONT_DISTRIBUTION_ID:
         required: false
+      CARGO_REGISTRY_TOKEN:
+        required: false
 permissions:
   contents: read
 jobs:
@@ -127,14 +129,14 @@ jobs:
       if: steps.release.outputs.release_created == 'true' && inputs.publish-npm
       run: npm publish --access public
     - name: Authenticate to crates.io
-      if: steps.release.outputs.release_created == 'true' && inputs.rust-tests
+      if: steps.release.outputs.release_created == 'true' && inputs.rust-tests && env.CARGO_TOKEN_PROVIDED != 'true'
       id: crates
       uses: rust-lang/crates-io-auth-action@v1
     - name: Publish Rust crate
       if: steps.release.outputs.release_created == 'true' && inputs.rust-tests
       run: cargo publish --locked --allow-dirty
       env:
-        CARGO_REGISTRY_TOKEN: ${{ steps.crates.outputs.token }}
+        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN || steps.crates.outputs.token }}
     - name: Authenticate to AWS
       if: steps.release.outputs.release_created == 'true' && inputs.deploy-schema
       uses: aws-actions/configure-aws-credentials@v4
@@ -160,3 +162,4 @@ jobs:
       uses: actions/deploy-pages@v4
     env:
       NODE_OPTIONS: ${{ inputs.node-options }}
+      CARGO_TOKEN_PROVIDED: ${{ secrets.CARGO_REGISTRY_TOKEN != '' }}
